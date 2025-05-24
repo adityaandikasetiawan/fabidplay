@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Formulir Berlangganan idPlay</title>
+  <!-- Tambahkan favicon -->
+  <link rel="icon" href="/assets/images/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/images/favicon.ico" type="image/x-icon">
+  <!-- CSS dan script lainnya -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Tambahkan di bagian head -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
+  <!-- Tambahkan di bagian head -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+  <script src="/js/script.js"></script>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <img src="/assets/images/logo.png" alt="idPlay Logo" class="logo">
+      </div>
+      <div class="title-section">
+        <h1>Formulir Berlangganan</h1>
+      </div>
+      <div class="contact-section">
+        <div class="customer-service">
+          <img src="/assets/images/cs-icon.png" alt="Customer Service" class="cs-icon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="form-instruction">
+      <div class="instruction-header">
+        <p>MOHON UPLOAD FOTO KTP ANDA</p>
+      </div>
+      <div class="ktp-upload-container">
+        <div class="ktp-preview">
+          <img id="ktp-preview-image" src="/assets/images/ktp-placeholder.png" alt="Preview KTP">
+        </div>
+        <div class="ktp-upload-controls">
+          <label for="ktp-upload" class="upload-btn">
+            <i class="fas fa-id-card"></i> Pilih File KTP
+            <input type="file" id="ktp-upload" accept="image/*" capture="camera" hidden>
+          </label>
+          <p class="upload-info">Format: JPG, PNG, JPEG (Maks. 5MB)</p>
+          <p id="ktp-upload-status"></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-container">
+      <div class="card pdf-container">
+        <div class="card-header">
+          <i class="fas fa-file-pdf"></i> Dokumen Formulir
+        </div>
+        <div class="card-body">
+          <div class="pdf-canvas-container">
+            <!-- Memanggil API dari Idmall -->
+          
+          </div>
+        </div>
+      </div>
+      
+      <div class="card tnc-container">
+        <div class="card-header">
+          <i class="fas fa-gavel"></i> Syarat dan Ketentuan
+        </div>
+        <div class="card-body">
+          <div class="tnc-content">
+            <div class="scrollable-tnc">
+              <div class="tnc-title">
+                <p><strong>KONTRAK BERLANGGANAN IDPLAY</strong></p>
+              </div>
+              
+              <div class="pasal-container">
+                <div class="pasal-header">
+                  <h3>PASAL 1</h3>
+                  <h4>DEFINISI</h4>
+                </div>
+                <div class="pasal-content">
+                  <p>1. Dalam KONTRAK BERLANGGANAN ini, kecuali subyek atau konteksnya mengharuskan pengertian lain, istilah-istilah dan bentuk tulisan kapital di bawah ini memiliki arti sebagai berikut :</p>
+                  <p>a. "KONTRAK BERLANGGANAN" adalah perjanjian LAYANAN IDPLAY yang dibuat oleh dan antara PT. TRANS INDONESIA SUPERKORIDOR (selanjutnya disebut "TIS") dengan PELANGGAN.</p>
+                  <p>b. "TIS" adalah Perseroan terbatas yang didirikan berdasarkan Akta Pendirian No.01 Tahun 2018 yang dibuat oleh Notaris Rudy Putranom Syafarullah, S.H., M.Kn. dan Akta Perubahan terakhir Perseroan No. 04 tertanggal 06 September 2022 yang dibuat oleh Chairun Nasra, S.H., M.Kn serta bergerak di bidang Penyedia Layanan Telekomunikasi, berkedudukan di Artha Gading Niaga Blok E11-12-15A, Jakarta Utara, 14240.</p>
+                  <p>c. "PELANGGAN" adalah perorangan, badan usaha dan/atau badan hukum yang berkedudukan di luar ataupun di Indonesia yang telah menandatangani KONTRAK BERLANGGANAN dengan TIS untuk berlangganan LAYANAN IDPLAY dan bertanggung jawab atas segala akibat yang timbul dari padanya.</p>
+                  <p>d. "PARA PIHAK" adalah TIS dan PELANGGAN yang bertindak secara bersama-sama, dan secara sendiri-sendiri disebut dengan "PIHAK".</p>
+                  <p>e. "JASA INTERNET" adalah layanan televisi kabel berbayar dan layanan akses internet yang terdiri dari jenis layanan SIMPLI-FUN, SUPER-FUN, FUN-TASTIC, SILVER BIZ, GOLD BIZ dan PLATINUM BIZ yang disediakan oleh TIS yang tertera pada FAB untuk PELANGGAN nya, baik sendiri maupun bekerjasama dengan PIHAK KETIGA, selanjutnya disebut ("LAYANAN IDPLAY").</p>
+                  <p>f. "PERANGKAT" adalah peralatan Optical Network Unit (ONU) dan peralatan pendukung lainnya yang terdiri dari Modem, Set Top Box (STB), Decoder, Low Noise Block (LNB) yang dipasang dan disewakan kepada PELANGGAN di ALAMAT INSTALASI selama PELANGGAN berlangganan LAYANAN IDPLAY berdasarkan KONTRAK BERLANGGANAN ini.</p>
+                  <p>g. "SURVEY" adalah kegiatan penelitian teknis yang dilakukan oleh Karyawan TIS dan/atau PIHAK KETIGA yang bekerjasama dengan TIS dalam rangka persiapan penawaran dan atau persiapan instalasi Perangkat LAYANAN IDPLAY.</p>
+                  <p>h. "INSTALASI" adalah kegiatan pemasangan PERANGKAT yang dilakukan oleh karyawan TIS dan/atau PIHAK KETIGA yang bekerjasama dengan TIS dalam rangka pengadaan LAYANAN IDPLAY.</p>
+                  <p>i. "OPERASI" adalah layanan monitoring, kontrol dan pemeliharaan LAYANAN IDPLAY yang dilakukan oleh TIS dan/atau PIHAK KETIGA yang bekerjasama dengan TIS kepada PELANGGAN selama jangka waktu KONTRAK BERLANGGANAN.</p>
+                  <p>j. "FAB" adalah Formulir Aktivasi Berlangganan yang wajib diisi oleh PELANGGAN sebelum pemasangan/instalasi LAYANAN IDPLAY yang berisikan data PELANGGAN dan data layanan yang dipilih oleh PELANGGAN.</p>
+                  <p>k. "BAA" adalah Berita Acara Aktivasi LAYANAN IDPLAY yang ditandatangani oleh PELANGGAN dan TIS. Tanggal BAA digunakan sebagai awal dimulainya pelayanan LAYANAN IDPLAY.</p>
+                  <p>l. "ISOLIR" adalah pemutusan sementara oleh TIS atas LAYANAN IDPLAY yang digunakan oleh PELANGGAN apabila PELANGGAN tidak memenuhi kewajiban sebagaimana diatur dalam KONTRAK BERLANGGANAN ini.</p>
+                  <p>m. "TERMINASI" adalah adalah pemutusan LAYANAN IDPLAY yang digunakan oleh PELANGGAN secara permanen oleh TIS.</p>
+                  <p>n. "BIAYA BULANAN" adalah biaya tetap perbulan selama masa berlangganan yang wajib dibayar setiap bulan oleh PELANGGAN atas LAYANAN IDPLAY.</p>
+                  <p>o. "BIAYA REGISTRASI" adalah biaya satu kali yang wajib dibayar oleh PELANGGAN sebagai Biaya Instalasi Perangkat di ALAMAT INSTALASI.</p>
+                  <p>p. "LAMPIRAN" merupakan dokumen-dokumen pendukung yang merupakan bagian tak terpisahkan dari KONTRAK BERLANGGANAN ini.</p>
+                  <p>q. "PIHAK KETIGA" adalah perorangan, badan usaha dan/atau badan hukum yang bekerjasama dengan TIS dan/atau yang ditunjuk oleh TIS untuk menyediakan/menjual/memasarkan LAYANAN IDPLAY kepada PELANGGAN.</p>
+                  <p>r. "ALAMAT INSTALASI adalah lokasi yang dicantumkan oleh PELANGGAN dalam FAB dimana PERALATAN dipasang.</p>
+                  <p>s. "INSTALASI KABEL RUMAH/GEDUNG" atau "IKR/IKG" adalah instalasi jaringan di rumah/gedung dimana PERALATAN dipasang ke perangkat terminal seperti komputer dan televisi di ALAMAT INSTALASI.</p>
+                  <p>2. Judul yang ada dalam KONTRAK BERLANGGANAN ini hanya digunakan sebagai kemudahan acuan saja dan tidak memiliki akibat hukum.</p>
+                  <p>3. Acuan kepada suatu ketentuan peraturan meliputi ketentuan tersebut yang dari waktu ke waktu dimodifikasi, diubah atau diundangkan kembali sejauh modifikasi, perubahan atau pengundangan kembali tersebut berlaku atau dapat diterapkan pada transaksi-transaksi yang diadakan di bawah ini.</p>
+                  
+                  <p><strong>PASAL 2 RUANG LINGKUP</strong></p>
+                  <p>Ruang Lingkup Kerjasama KONTRAK BERLANGGANAN ini adalah :</p>
+                  <p>1. INSTALASI atas LAYANAN IDPLAY;</p>
+                  <p>2. Pemakaian Jasa LAYANAN IDPLAY oleh PELANGGAN;</p>
+                  <p>3. OPERASI dan PEMELIHARAAN LAYANAN IDPLAY;</p>
+                  <p>4. Pembayaran BIAYA REGISTRASI, BIAYA BULANAN dan/atau Biaya lainnya atas jasa LAYANAN IDPLAY.</p>
+                  
+                  <p><strong>PASAL 3 JANGKA WAKTU</strong></p>
+                  <p>1. KONTRAK BERLANGGANAN ini berlaku selama 1 Tahun sejak FAB ditandatangani oleh PARA PIHAK.</p>
+                  <p>2. Jangka waktu minimum berlangganannya PELANGGAN atas LAYANAN IDPLAY adalah 12 Bulan terhitung sejak tanggal Aktivasi yang tertuang dalam BAA yang telah ditandatangani PARA PIHAK.</p>
+                  <p>3. Jangka waktu KONTRAK BERLANGGANAN atau Jangka Waktu Berlangganan sebagaimana dimaksud Ayat (1) dan (2) dapat diperpanjang untuk 1 (satu) tahun berikutnya apabila PELANGGAN memberitahukan perpanjangan KONTRAK BERLANGGANAN dan masa berlangganan IDPLAY secara tertulis ataupun elektronik kepada TIS paling lambat 30 Hari Kalender sebelum KONTRAK BERLANGGANAN dan/atau masa berlangganan akan berakhir.</p>
+                  <p>4. Apabila PELANGGAN tidak memberitahukan paling lambat 30 Hari Kalender kepada TIS sebagaimana dimaksud Ayat (3) Pasal ini, jangka waktu KONTRAK BERLANGGANAN dan jangka waktu berlangganan akan diperpanjang secara otomatis untuk 1 tahun berikutnya.</p>
+                  
+                  <p><strong>PASAL 4 HAK DAN KEWAJIBAN PT TRANS INDONESIA SUPERKORIDOR</strong></p>
+                  <p>1. Berhak menerima pembayaran atas BIAYA REGISTRSI, BIAYA INSTALASI serta biaya yang lainnya yang timbul sehubungan dengan LAYANAN IDPLAY yang dilanggan oleh PELANGGAN.</p>
+                  <p>2. Berhak melakukan ISOLIR atau TERMINASI dalam hal PELANGGAN tidak dapat memenuhi kewajibannya seperti diatur dalam Pasal 8 KONTRAK BERLANGGANAN ini.</p>
+                  <p>3. Berhak menerima atau mengambil PERALATAN milik TIS yang terinstal dan/atau terpasang di ALAMAT INSTALASI, apabila PELANGGAN berhenti berlangganan LAYANAN IDPLAY.</p>
+                  <p>4. TIS maupun PIHAK KETIGA yang bekerjasama dengan TIS berhak memasuki ALAMAT INSTALASI untuk melakukan INSTALASI KABEL RUMAH/GEDUNG (IKR/IKG) dan setiap saat atas izin PELANGGAN untuk melakukan Layanan OPERASI.</p>
+                  <p>5. Untuk keperluan peningkatan kualitas LAYANAN IDPLAY, TIS dan/atau PIHAK KETIGA yang bekerjasama dengan TIS, TIS berhak mendapatkan izin PELANGGAN untuk melakukan layanan OPERASI di ALAMAT INSTALASI.</p>
+                  <p>6. TIS berhak mendapatkan pemberitahuan tertulis atau elektronik dari PELANGGAN yang ingin melakukan Perubahan konfigurasi, spesifikasi teknis dan lainnya.</p>
+                  <p>7. Berkewajiban menyediakan LAYANAN IDPLAY di ALAMAT INSTALASI sesuai dengan ketentuan FAB dan KONTRAK BERLANGGANAN.</p>
+                  <p>8. Berkewajiban memberikan pelayanan yang baik dan transparan terkait LAYANAN IDPLAY kepada PELANGGAN.</p>
+                  <p>9. Berkewajiban memberikan informasi mengenai spesifikasi teknis, sifat-sifat, dan karakteristik umum LAYANAN IDPLAY yang disediakan TIS, melalui brosur, leaflet dan/atau media lainnya.</p>
+                  <p>10. Berkewajiban menindaklanjuti laporan PELANGGAN jika sambungan LAYANAN IDPLAY di ALAMAT INSTALASI mengalami gangguan atau kerusakan dan atas setiap pemindahtanganan hak, tanggung jawab, dan/atau kewajiban PELANGGAN terkait LAYANAN IDPLAY berdasarkan KONTRAK BERLANGGANAN kepada Pihak lainnya.</p>
+                  <p>11. Berkewajiban menindaklanjuti permintaan PELANGGAN untuk melakukan perubahan paket LAYANAN IDPLAY, penghentian sementara LAYANAN IDPLAY atau pemutusan LAYANAN IDPLAY.</p>
+                  <p>12. Apabila PELANGGAN telah memberitahukan pemberitahuan sebagaimana dimaksud Pasal 4 Ayat (6) di atas, TIS berkewajiban memberikan persetujuan tertulis atau elektronik ataupun menolaknya dengan alasan yang wajar.</p>
+                  
+                  <p><strong>PASAL 5 HAK DAN KEWAJIBAN PELANGGAN</strong></p>
+                  <p>1. Berhak mendapatkan LAYANAN IDPLAY sesuai dengan ketentuan FAB dan KONTRAK BERLANGGANAN.</p>
+                  <p>2. Berhak mendapatkan layanan OPERASI atas LAYANAN IDPLAY yang dilakukan oleh TIS dan/atau PIHAK KETIGA yang bekerjasama dengan TIS.</p>
+                  <p>3. Berhak melaporkan kepada TIS jika sambungan LAYANAN IDPLAY di ALAMAT INSTALASI mengalami gangguan atau kerusakan.</p>
+                  <p>4. Berhak mendapatkan pelayanan yang baik dan transparan dari TIS atas LAYANAN IDPLAY.</p>
+                  <p>5. Berhak mendapatkan informasi mengenai spesifikasi teknis, sifat-sifat, dan karakteristik umum LAYANAN IDPLAY yang disediakan TIS.</p>
+                  <p>6. Berkewajiban menaburkan pembayaran kepada TIS atas BIAYA REGISTRASI, BIAYA BULANAN serta biaya yang lainnya yang timbul sehubungan dengan LAYANAN IDPLAY yang dilanggan oleh PELANGGAN.</p>
+                  <p>7. Berkewajiban membaca, memahami, dan menandatangani seluruh lampiran KONTRAK BERLANGGANAN ini atau dokumen lain terkait pemasangan, perbaikan, modifikasi/perubahan jaringan IDPLAY atau PERALATAN, dan/atau modifikasi/perubahan atau pencabutan LAYANAN IDPLAY di ALAMAT INSTALASI, yang disampaikan TIS dan/atau PIHAK KETIGA yang bekerjasama dengan TIS kepada PELANGGAN.</p>
+                  <p>8. Berkewajiban memelihara INSTALASI PERALATAN di ALAMAT INSTALASI agar selalu dalam keadaan baik, atas biaya PELANGGAN sendiri.</p>
+                  <p>9. Berkewajiban memberitahukan pemberitahuan tertulis atau elektronik ke TIS apabila PELANGGAN ingin melakukan Perubahan konfigurasi dan spesifikasi teknis dan lainnya.</p>
+                  <p>10. Berkewajiban melaporkan secara tertulis ataupun elektronik kepada TIS atas setiap pemindahtanganan hak, tanggung jawab dan/atau kewajiban PELANGGAN terkait LAYANAN IDPLAY kepada Pihak lain.</p>
+                  <p>11. Berkewajiban menyerahkan PERALATAN milik TIS yang terinstal atau terpasang di ALAMAT INSTALASI kepada TIS dan/atau PIHAK KETIGA yang bekerjasama dengan TIS, apabila KONTRAK BERLANGGANAN ini berakhir atau diakhiri berdasarkan ketentuan dalam KONTRAK BERLANGGANAN ini.</p>
+                  <p>12. Berkewajiban memberikan izin kepada TIS dan/atau PIHAK KETIGA yang bekerjasama dengan TIS untuk melakukan layanan OPERASI di ALAMAT INSTALASI.</p>
+                  
+                  <p><strong>PASAL 6 BIAYA DAN PEMBAYARAN</strong></p>
+                  <p>1. TIS akan mengirimkan Invoice untuk Pembayaran BIAYA BULANAN, BIAYA REGISTRASI dan biaya yang lainnya yang timbul sehubungan dengan LAYANAN IDPLAY yang dilanggan oleh PELANGGAN, PELANGGAN akan membayar biaya tersebut dengan cara transfer ke rekening PT. TRANS INDONESIA SUPERKORIDOR, yaitu:</p>
+                  <p>a. Nama Bank : Bank Central Asia (BCA)</p>
+                  <p>b. Nomor Virtual Account: 13715.xxx (v14 Digit No.ID Pelanggan) Atau tempat lain yang ditunjuk oleh TIS.</p>
+                  <p>2. BIAYA BULANAN dihitung sejak tanggal aktivasi yang tercantum pada BAA, apabila tanggal aktivasi dalam BAA bukan pada awal bulan, maka pada bulan pertama tersebut, BIAYA BULANAN akan di dihitung secara pro-rata seperti tercantum dalam FAB.</p>
+                  <p>3. BIAYA BULANAN, BIAYA REGISTRASI dan biaya satu kali lainnya jika ada, akan dibayarkan PELANGGAN paling lambat pada tanggal jatuh tempo yang tertera dalam Invoice yang diterbitkan/dikirimkan oleh TIS.</p>
+                  <p>4. BIAYA BULANAN, BIAYA REGISTASI dan biaya lainnya belum termasuk PPN 11%.</p>
+                  
+                  <p><strong>PASAL 7 KETERLAMBATAN PEMBAYARAN DAN SANKSI</strong></p>
+                  <p>1. Apabila pembayaran Biaya Bulanan belum diterima oleh TIS paling lambat pada tanggal jatuh tempo yang tertera di Invoice, maka LAYANAN IDPLAY akan di ISOLIR sementara dengan pemberitahuan melaui email atau surat pemberitahuan terlebih dahulu minimal 7 Hari sebelum dilakukan ISOLIR.</p>
+                  <p>2. Apabila pembayaran BIAYA BULANAN belum diterima TIS dalam waktu 45 Hari Kalender dari Total waktu pada tanggal jatuh tempo dalam invoice, maka TIS akan melakukan TERMINASI tanpa perlu memberitahukan terlebih dahulu kepada PELANGGAN. Penyambungan TERMINASI tersebut akan dianggap sebagai penyambungan baru dan PELANGGAN akan dikenakan biaya baru.</p>
+                  <p>3. Apabila PELANGGAN melunasi biaya-biaya yang menjadi kewajibannya setelah dilakukannya ISOLIR, maka TIS akan membuka ISOLIR selambat-lambatnya 3 (tiga) hari kerja.</p>
+                  
+                  <p><strong>PASAL 8 PENGAKHIRAN KONTRAK BERLANGGANAN</strong></p>
+                  <p>1. KONTRAK BERLANGGANAN ini akan berakhir apabila :</p>
+                  <p>a. PELANGGAN melakukan pelanggaran terhadap ketentuan dalam KONTRAK BERLANGGANAN ini, dimana pelanggaran itu tidak diperbaiki dalam waktu 30 (tiga puluh) hari kalender setelah ada teguran tertulis dari TIS;</p>
+                  <p>b. PELANGGAN atau TIS memberitahukan kepada salah satu PIHAK secara tertulis atau elektronik untuk tidak memperpanjang KONTRAK BERLNGGANAN atau Masa Berlangganan selambat-lambatnya 1 bulan sebelum berakhirnya Jangka Waktu KONTRAK BERLANGGANAN atau Jangka waktu berlangganan yang tertuang dalam BAA;</p>
+                  <p>c. PELANGGAN telah mencapai maksimum pinalti sebagaimana diatur pada Pasal 7 Ayat (4) di atas;</p>
+                  <p>d. Salah satu PIHAK 'Pailit' atau dalam proses 'Kepailitan', mengajukan permohonan penundaan kewajiban pembayaran utang (PKPU), atau melakukan tindakan sehubungan dengan adanya insolvensi atau likuidasi;</p>
+                  <p>e. Lisensi atau izin penyelenggaraan salah satu PIHAK dicabut oleh Pemerintah;</p>
+                  <p>2. Apabila pada saat KONTRAK BERLANGGANAN ini diputuskan atau berakhir ternyata masih terdapat kewajiban yang belum diselesaikan oleh PARA PIHAK, maka ketentuan-ketentuan dalam KONTRAK BERLANGGANAN ini masih berlaku dan mengikat PARA PIHAK sampai dengan diselesaikannya hak dan kewajiban PARA PIHAK;</p>
+                  <p>3. Untuk keperluan pengakhiran kontrak ini, PARA PIHAK sepakat untuk mengesampingkan keberlakuan ketentuan-ketentuan pasal 1266 dan 1267 Kitab Undang-Undang Hukum Perdata.</p>
+                  
+                  <p><strong>PASAL 9 PENGALIHAN</strong></p>
+                  <p>1. PELANGGAN tidak dapat mengalihkan kepada Pihak Ketiga mengenai hak dan kewajiban dalam KONTRAK BERLANGGANAN ini tanpa persetujuan tertulis terlebih dahulu dari TIS.</p>
+                  <p>2. Apabila PELANGGAN melanggar ketentuan Ayat (1) Pasal ini, maka PELANGGAN akan dikenakan pinalti sesuai dengan Pasal 8 dalam Kontrak ini.</p>
+                  <p>3. LAYANAN IDPLAY yang disediakan oleh TIS hanya boleh digunakan oleh PELANGGAN yang terdaftar dalam FAB dan KONTRAK BERLANGGANAN ini dan/atau kelompok perusahaan PELANGGAN.</p>
+                  <p>4. Pemindahan ALAMAT INSTALASI atas LAYANAN IDPLAY ke tempat lain (relokasi) dapat dilakukan sepanjang memungkinkan secara teknis dan segala biaya yang timbul akan dibebankan kepada PELANGGAN.</p>
+                  
+                  <p><strong>PASAL 10 KERAHASIAAN</strong></p>
+                  <p>TIS dan PELANGGAN sepakat untuk tidak membuka atau memberikan keterangan dengan cara apapun kepada Pihak lain (Kecuali kepada PIHAK KETIGA yang bekerjasama dengan TIS dan/atau yang ditunjuk oleh TIS), mengenai isi KONTRAK BERLANGGANAN ini atau LAMPIRAN lainnya yang merupakan bagian tak terpisahkan dari KONTRAK BERLANGGANAN ini atau setiap informasi, dokumen, surat-surat dan perjanjian-perjanjian yang telah diberikan oleh salah satu Pihak kepada Pihak lainnya mengenai kegiatan usaha salah satu Pihak dengan ketentuan bahwa apabila hal tersebut wajib dilakukan oleh salah satu Pihak berdasarkan ketentuan hukum dan peraturan perundang-undangan yang berlaku maka Pihak tersebut wajib untuk segera memberikan pemberitahuan tertulis mengenai hal tersebut kepada Pihak lainnya.</p>
+                  
+                  <p><strong>PASAL 11 TANGGUNG JAWAB DAN LARANGAN</strong></p>
+                  <p>1. PELANGGAN bertanggung jawab sepenuhnya dan membebaskan TIS dari segala tuntutan, dalam hal timbul gugatan atau tuntutan dari Pihak lainnya atas setiap penggunaan LAYANAN IDPLAY oleh siapapun di ALAMAT INSTALASI termasuk penggunaan oleh anggota keluarga, pegawai, penghuni, atau Pihak lainnya.</p>
+                  <p>2. PELANGGAN dilarang melakukan pemindahan atau perubahan apapun terhadap Jaringan dan/atau LAYANAN IDPLAY tanpa mendapat persetujuan dari TIS terlebih dahulu.</p>
+                  <p>3. PELANGGAN dilarang melakukan penjualan kembali baik sebagian maupun keseluruhan LAYANAN IDPLAY dalam bentuk apapun tanpa izin tertulis dari TIS.</p>
+                  <p>4. TIS dilarang melakukan perubahan dalam bentuk apapun terhadap Jaringan dan/atau LAYANAN IDPLAY, kecuali untuk keperluan peningkatan nilai tambah, kualitas, dan keamanan LAYANAN IDPLAY dan dilarang mengenakan sanksi kepada PELANGGAN kecuali sesuai dengan ketentuan KONTRAK BERLANGGANAN ini.</p>
+                  <p><strong>PASAL 12 FORCE MAJEURE</strong></p>
+                  <p>1. Force Majeure adalah kejadian-kejadian yang tidak dapat diduga dan walaupun dapat diduga tetapi tidak dapat dihindarkan seperti namun tidak terbatas pada Pandemi (seperti COVID-19), Epidemi, timbulnya peperangan, pemberontakan, kerusuhan, sabotase, kebakaran, disambar petir, banjir, tanah longsor, gempa bumi, Sun-Outage dan bencana alam lainnya, dengan ketentuan bahwa pihak yang bersangkutan telah mengambil langkah-langkah yang diperlukan guna menghindari atau memperkecil kerusakan atau kerugian.</p>
+                  <p>2. Kejadian Force Majeure sebagaimana dimaksud ayat 1 Pasal ini harus dinyatakan dengan pernyataan tertulis dari pejabat setempat yang berwewenang.</p>
+                  <p>3. Pihak yang terkena Force majeure wajib memberitahukan secara tertulis kepada pihak lainnya paling lambat dalam jangka waktu 7 (tujuh) hari kalender sejak saat terjadi dan saat berakhirnya kejadian tersebut.</p>
+                  <p>4. Kelalaian memberitahu secara tertulis sebagaimana ayat 3 pasal ini, menyebabkan pihak lainnya dapat tidak mengakui kejadian tersebut sebagai Force Majeure.</p>
+                  <p>5. Kerugian yang diderita salah satu pihak akibat Force Majeure bukan merupakan tanggung jawab pihak lainnya.</p>
+                  
+                  <p><strong>PASAL 13 PERSELISIHAN DAN DOMISILI HUKUM</strong></p>
+                  <p>1. Perbedaan pendapat atau perselisihan yang timbul sehubungan dengan pelaksanaan KONTRAK BERLANGGANAN ini akan diselesaikan secara musyawarah untuk mencapai mufakat.</p>
+                  <p>2. Apabila perbedaan pendapat atau perselisihan tersebut tidak dapat diselesaikan secara musyawarah mufakat, maka penyelesaiannya dilakukan melalui Pengadilan Negeri Jakarta Utara.</p>
+                  
+                  <p><strong>PASAL 14 PENAFSIRAN, PERUBAHAN DAN PENAMBAHAN</strong></p>
+                  <p>1. KONTRAK BERLANGGANAN ini berlaku efektif sejak FAB ditandatangani oleh PARA PIHAK.</p>
+                  <p>2. Hal-hal lain yang tidak atau belum jelas diatur dalam KONTRAK BERLANGGANAN ini akan diatur lebih lanjut dalam Addendum/Amandemen/Side Letter antara TIS dan PELANGGAN yang merupakan bagian tak terpisahkan dari KONTRAK BERLANGGANAN ini.</p>
+                  <p>3. Lampiran yang diakui sebagai satu kesatuan dalam KONTRAK BERLANGGANAN ini adalah FAB, BAA, Addendum/Amandemen/Side Letter yang mana identitas PELANGGAN memiliki kesamaan antara FAB, BAA, Addendum/amandemen/Side Letter.</p>
+                  <p>4. Apabila oleh suatu sebab terdapat sebagian dari ketentuan dalam KONTRAK BERLANGGANAN ini yang dibatalkan oleh Hakim, lembaga yang berwenang, dan/atau peraturan perundang-undangan yang berlaku, atau menjadi batal demi hukum maka pembatalan ketentuan tersebut tidak membatalkan atau mempengaruhi ketentuan lainnya dalam KONTRAK BERLANGGANAN ini.</p>
+                  <p>5. Apabila terjadi gangguan atau adanya keluhan atas LAYANAN IDPLAY, PELANGGAN dapat menghubungi +628111520938, Facebook : idplayofficial dan Instagram : @idplayofficial</p>
+                  
+                  <p><strong>PASAL 15 PENUTUP</strong></p>
+                  <p>Kontrak Berlangganan ini dibuat rangkap 2 (dua), masing-masing sama bunyinya serta mempunyai kekuatan hukum yang sama setelah ditandatangani oleh PARA PIHAK.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form id="subscription-form" enctype="multipart/form-data">
+            <!-- Semua elemen formulir (KTP, dokumen, tanda tangan) -->
+          </form>
+          
+          <!-- Tambahkan pasal-pasal lainnya dengan format yang sama -->
+            </div>
+            
+            <div class="tnc-notice">
+              <p style="color: red; font-weight: bold; text-align: center; margin-top: 15px;">Silakan baca syarat dan ketentuan sampai selesai.</p>
+            </div>
+            
+            <div class="agreement-container">
+              <input type="checkbox" id="agree-tnc" class="agreement-checkbox" disabled>
+              <label for="agree-tnc" class="agreement-text">Saya telah membaca dan menyetujui Syarat dan Ketentuan di atas</label>
+            </div>
+        </div>
+      </div>
+      
+      <!-- Tambahkan setelah bagian upload KTP -->
+      <div class="card signature-container">
+        <div class="card-header">
+          <i class="fas fa-pen-fancy"></i> Tanda Tangan Digital
+        </div>
+        <div class="card-body">
+          <div class="signature-instructions">
+            <p>Silakan tanda tangan di area di bawah ini:</p>
+          </div>
+          <div class="signature-pad-container">
+            <canvas id="signature-pad" width="600" height="200"></canvas>
+          </div>
+          <div class="signature-controls">
+            <button type="button" id="clear-signature" class="btn btn-secondary">
+              <i class="fas fa-eraser"></i> Hapus Tanda Tangan
+            </button>
+            <button type="button" id="save-signature" class="btn btn-primary">
+              <i class="fas fa-save"></i> Simpan Tanda Tangan
+            </button>
+          </div>
+          <div id="signature-status"></div>
+        </div>
+      </div>
+      
+      <!-- Tambahkan tombol kirim formulir -->
+      <div class="form-submit-container">
+        <button type="button" id="submit-form" class="btn btn-primary btn-lg">
+          <i class="fas fa-paper-plane"></i> Kirim Formulir
+        </button>
+        <p id="form-submit-status"></p>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="/assets/images/logo-white.png" alt="idPlay Logo" class="footer-logo-img">
+      </div>
+      
+      <div class="footer-sections">
+        <div class="footer-office">
+          <h3>HEAD OFFICE</h3>
+          <p>Rukan Artha Gading Niaga, Jl. Boulevard Artha Gading No.12 Blok E 11-15A, RT.18/RW.8, Klp. Gading Bar., Kec. Klp. Gading, Jakarta Utara, Daerah Khusus Ibukota Jakarta 14240</p>
+          <p><i class="fas fa-phone"></i> 0822 8998 6477</p>
+          <p><i class="fas fa-envelope"></i> cs.sys@supercoridor.co.id</p>
+        </div>
+        
+        <div class="footer-regional">
+          <h3>REGIONAL OFFICE</h3>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> JABODETABEK</li>
+            <li><i class="fas fa-map-marker-alt"></i> Jawa Barat</li>
+            <li><i class="fas fa-map-marker-alt"></i> Jawa Timur</li>
+            <li><i class="fas fa-map-marker-alt"></i> Banten</li>
+            <li><i class="fas fa-map-marker-alt"></i> Jawa Tengah</li>
+            <li><i class="fas fa-map-marker-alt"></i> Sulawesi</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>Copyright © 2025 idPlay</p>
+    </div>
+  </footer>
+
+  <script src="/js/script.js"></script>
+</body>
+</html>
