@@ -323,7 +323,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Fungsi untuk memuat dokumen formulir dari API
   function loadFormDocument() {
-    const taskId = '16003715';
+    // Ambil CID dari parameter URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const taskId = urlParams.get('cid'); // Parameter 'cid' dari URL
+    
+    // Jika CID tidak ada di URL, tampilkan pesan error
+    if (!taskId) {
+      const pdfCanvasContainer = document.querySelector('.pdf-canvas-container');
+      if (pdfCanvasContainer) {
+        pdfCanvasContainer.innerHTML = '<div class="error-message">Error: CID tidak ditemukan dalam URL</div>';
+      }
+      return;
+    }
+    
     const apiUrl = `http://10.80.253.78:6868/api/subscription/fab/generate/${taskId}?cust_sign=blank`;
     const pdfCanvasContainer = document.querySelector('.pdf-canvas-container');
     
