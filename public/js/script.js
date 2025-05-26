@@ -323,11 +323,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Fungsi untuk memuat dokumen formulir dari API
   function loadFormDocument() {
-    // Ambil task_id dari URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const taskId = urlParams.get('task_id') || '16003265';
-    
-    const apiUrl = `http://10.80.253.78:6868/api/subscription/fkb/generate-pdf/${taskId}?cust_signature=blank`;
+    const taskId = '16003715';
+    const apiUrl = `http://10.80.253.78:6868/api/subscription/fab/generate/${taskId}?cust_sign=blank`;
     const pdfCanvasContainer = document.querySelector('.pdf-canvas-container');
     
     if (!pdfCanvasContainer) {
@@ -335,33 +332,44 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
-    // Tampilkan loading
     pdfCanvasContainer.innerHTML = '<div class="loading-indicator"><i class="fas fa-spinner fa-spin"></i> Memuat dokumen formulir...</div>';
     
-    // Panggil API untuk mendapatkan dokumen PDF
+    // Buat iframe untuk menampilkan PDF
+    const iframe = document.createElement('iframe');
+    iframe.style.width = '100%';
+    iframe.style.height = '600px';
+    iframe.style.border = 'none';
+    
+    // Set atribut untuk mencegah download
+    iframe.setAttribute('sandbox', 'allow-same-origin');
+    
+    // Muat PDF langsung ke iframe
     fetch(apiUrl, {
       method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Accept': 'application/pdf'
-      }
+      credentials: 'include'
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Gagal memuat dokumen. Status: ' + response.status);
+        throw new Error(`Gagal memuat dokumen. Status: ${response.status} ${response.statusText}`);
       }
       return response.blob();
     })
     .then(blob => {
-      // Konversi blob ke URL objek
-      const pdfUrl = URL.createObjectURL(blob);
+      const url = URL.createObjectURL(blob);
+      iframe.src = url;
       
-      // Tampilkan PDF menggunakan PDF.js
-      displayPDF(pdfUrl, pdfCanvasContainer);
+      // Bersihkan container dan tambahkan iframe
+      pdfCanvasContainer.innerHTML = '';
+      pdfCanvasContainer.appendChild(iframe);
+      
+      // Bersihkan URL setelah iframe dimuat
+      iframe.onload = () => {
+        URL.revokeObjectURL(url);
+      };
     })
     .catch(error => {
       console.error('Error:', error);
-      pdfCanvasContainer.innerHTML = `<div class="error-message"><i class="fas fa-exclamation-circle"></i> Gagal memuat dokumen: ${error.message}</div>`;
+      pdfCanvasContainer.innerHTML = `<div class="error-message">Gagal memuat dokumen: ${error.message}</div>`;
     });
   }
   
