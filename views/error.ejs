@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Error - idPlay</title>
+  <!-- Tambahkan favicon -->
+  <link rel="icon" href="/assets/images/logo h.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/images/logo h.png" type="image/x-icon">
+  <!-- CSS dan script lainnya -->
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .error-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 70vh;
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .error-icon {
+      font-size: 4rem;
+      color: #dc3545;
+      margin-bottom: 1rem;
+    }
+    
+    .error-title {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+    
+    .error-message {
+      font-size: 1.2rem;
+      color: #666;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+    
+    .redirect-info {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      max-width: 500px;
+    }
+    
+    .redirect-timer {
+      font-size: 1.1rem;
+      color: #007bff;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+    
+    .redirect-button {
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: white;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 25px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .redirect-button:hover {
+      background: linear-gradient(135deg, #0056b3, #004085);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    }
+    
+    .countdown {
+      font-size: 2rem;
+      color: #007bff;
+      font-weight: bold;
+      margin: 0 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="header-content">
+      <div class="logo-section">
+        <img src="/assets/images/logo.png" alt="idPlay Logo" class="logo">
+      </div>
+      <div class="title-section">
+        <h1>Akses Ditolak</h1>
+      </div>
+      <div class="contact-section">
+        <div class="customer-service">
+          <img src="/assets/images/cs-icon.png" alt="Customer Service" class="cs-icon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="error-container">
+      <div class="error-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+      </div>
+      
+      <h1 class="error-title">Maaf, Akses Tidak Valid</h1>
+      
+      <div class="error-message">
+        <p><%= message %></p>
+        <p>Untuk mengakses formulir berlangganan idPlay, Anda memerlukan CID (Customer ID) dan Key yang valid.</p>
+        <p>Silakan hubungi customer service kami untuk mendapatkan akses yang tepat.</p>
+      </div>
+      
+      <div class="redirect-info">
+        <div class="redirect-timer">
+          <i class="fas fa-clock"></i> Anda akan diarahkan ke website utama dalam <span class="countdown" id="countdown">10</span> detik
+        </div>
+        <p>Atau klik tombol di bawah untuk langsung mengunjungi website kami:</p>
+      </div>
+      
+      <a href="<%= redirectUrl %>" class="redirect-button">
+        <i class="fas fa-home"></i> Kunjungi idPlay.co.id
+      </a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <img src="/assets/images/logo-white.png" alt="idPlay Logo" class="footer-logo-img">
+      </div>
+      
+      <div class="footer-sections">
+        <div class="footer-office">
+          <h3>HEAD OFFICE</h3>
+          <p>Rukan Artha Gading Niaga, Jl. Boulevard Artha Gading No.12 Blok E 11-15A, RT.18/RW.8, Klp. Gading Bar., Kec. Klp. Gading, Jakarta Utara, Daerah Khusus Ibukota Jakarta 14240</p>
+          <p><i class="fas fa-phone"></i> 0822 8998 6477</p>
+          <p><i class="fas fa-envelope"></i> cs.sys@supercoridor.co.id</p>
+        </div>
+        
+        <div class="footer-regional">
+          <h3>REGIONAL OFFICE</h3>
+          <ul>
+            <li><i class="fas fa-map-marker-alt"></i> JABODETABEK</li>
+            <li><i class="fas fa-map-marker-alt"></i> Jawa Barat</li>
+            <li><i class="fas fa-map-marker-alt"></i> Jawa Timur</li>
+            <li><i class="fas fa-map-marker-alt"></i> Banten</li>
+            <li><i class="fas fa-map-marker-alt"></i> Jawa Tengah</li>
+            <li><i class="fas fa-map-marker-alt"></i> Sulawesi</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>Copyright © 2025 idPlay</p>
+    </div>
+  </footer>
+
+  <script>
+    // Countdown timer untuk redirect otomatis
+    let countdown = 10;
+    const countdownElement = document.getElementById('countdown');
+    const redirectUrl = '<%= redirectUrl %>';
+    
+    const timer = setInterval(() => {
+      countdown--;
+      countdownElement.textContent = countdown;
+      
+      if (countdown <= 0) {
+        clearInterval(timer);
+        window.location.href = redirectUrl;
+      }
+    }, 1000);
+    
+    // Log untuk debugging
+    console.log('Error page loaded - Missing CID and Key parameters');
+  </script>
+</body>
+</html>

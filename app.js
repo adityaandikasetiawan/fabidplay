@@ -37,7 +37,21 @@ const upload = multer({ storage: storage });
 
 // Routes
 app.get('/', (req, res) => {
-  res.render('index');
+  // Ambil parameter cid dan key dari query string
+  const cid = req.query.cid || '';
+  const key = req.query.key || '';
+  
+  // Periksa apakah cid dan key ada
+  if (!cid || !key) {
+    // Jika tidak ada cid atau key, arahkan ke halaman error
+    return res.render('error', { 
+      message: 'CID dan Key tidak ditemukan',
+      redirectUrl: 'https://idplay.co.id'
+    });
+  }
+  
+  // Kirim parameter ke template jika valid
+  res.render('index', { cid: cid, key: key });
 });
 app.get('/thankyou', (req, res) => {
   res.render('thankyou');
