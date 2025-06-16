@@ -63,7 +63,7 @@ function uploadKTP(fileData) {
       });
       
       // Gunakan endpoint yang benar
-      fetch('http://10.80.253.78:6868/api/subscription/retail/fkb/user', {
+      fetch('http://apiidmall.supercorridor.co.id/api/subscription/retail/fkb/user', {
         method: 'POST',
         body: formData
       })
@@ -109,7 +109,7 @@ function uploadSignature(imageData, taskId) {
       });
       
       // Gunakan endpoint yang benar
-      fetch(`http://10.80.253.78:6868/api/subscription/signature/upload/${taskId}`, {
+      fetch(`http://apiidmall.supercorridor.co.id/api/subscription/signature/upload/${taskId}`, {
         method: 'POST',
         body: formData
       })
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
-    const apiUrl = `http://10.80.253.78:6868/api/subscription/fab/generate/${taskId}?cust_sign=blank`;
+    const apiUrl = `http://apiidmall.supercorridor.co.id/api/subscription/fab/generate/${taskId}?cust_sign=blank`;
     const pdfCanvasContainer = document.querySelector('.pdf-canvas-container');
     
     if (!pdfCanvasContainer) {
@@ -455,7 +455,7 @@ function uploadSignature(imageData, taskId) {
         type: 'AUTOGRAPH'
       });
       
-      fetch(`http://10.80.253.78:6868/api/subscription/signature/upload/${taskId}`, {
+      fetch(`http://apiidmall.supercorridor.co.id/api/subscription/signature/upload/${taskId}`, {
         method: 'POST',
         body: formData
       })
