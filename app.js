@@ -14,6 +14,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
+// Tambahkan header keamanan
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Content-Security-Policy', "default-src 'self' https://apiidmall.supercorridor.co.id https: data: blob: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https://apiidmall.supercorridor.co.id; frame-src 'self' blob: data: https://apiidmall.supercorridor.co.id; object-src 'self' blob: data:; img-src 'self' data: blob: https://apiidmall.supercorridor.co.id");
+  next();
+});
+
 // Set view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));

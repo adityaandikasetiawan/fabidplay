@@ -62,8 +62,8 @@ function uploadKTP(fileData) {
         userId: userId
       });
       
-      // Gunakan endpoint yang benar
-      fetch('http://apiidmall.supercorridor.co.id/api/subscription/retail/fkb/user', {
+      // Gunakan endpoint yang benar dengan HTTPS
+      fetch('https://apiidmall.supercorridor.co.id/api/subscription/retail/fkb/user', {
         method: 'POST',
         body: formData
       })
@@ -108,8 +108,8 @@ function uploadSignature(imageData, taskId) {
         type: 'AUTOGRAPH'
       });
       
-      // Gunakan endpoint yang benar
-      fetch(`http://apiidmall.supercorridor.co.id/api/subscription/signature/upload/${taskId}`, {
+      // Gunakan endpoint yang benar dengan HTTPS
+      fetch(`https://apiidmall.supercorridor.co.id/api/subscription/signature/upload/${taskId}`, {
         method: 'POST',
         body: formData
       })
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
     
-    const apiUrl = `http://apiidmall.supercorridor.co.id/api/subscription/fab/generate/${taskId}?cust_sign=blank`;
+    const apiUrl = `https://apiidmall.supercorridor.co.id/api/subscription/fab/generate/${taskId}?cust_sign=blank`;
     const pdfCanvasContainer = document.querySelector('.pdf-canvas-container');
     
     if (!pdfCanvasContainer) {
@@ -346,43 +346,73 @@ document.addEventListener('DOMContentLoaded', function() {
     
     pdfCanvasContainer.innerHTML = '<div class="loading-indicator"><i class="fas fa-spinner fa-spin"></i> Memuat dokumen formulir...</div>';
     
-    // Buat iframe untuk menampilkan PDF
-    const iframe = document.createElement('iframe');
-    iframe.style.width = '100%';
-    iframe.style.height = '600px';
-    iframe.style.border = 'none';
+    // Gunakan iframe dengan src langsung ke API URL
+    console.log('Loading PDF from API URL:', apiUrl);
     
-    // Set atribut untuk mencegah download
-    iframe.setAttribute('sandbox', 'allow-same-origin');
+    // Bersihkan container
+    pdfCanvasContainer.innerHTML = '';
     
-    // Muat PDF langsung ke iframe
+    // Gunakan fetch untuk mengambil PDF sebagai blob dan tampilkan dengan object tag
+    console.log('Fetching PDF from API URL:', apiUrl);
+    
     fetch(apiUrl, {
       method: 'GET',
-      credentials: 'include'
+      headers: {
+        'Accept': 'application/pdf'
+      }
     })
     .then(response => {
       if (!response.ok) {
-        throw new Error(`Gagal memuat dokumen. Status: ${response.status} ${response.statusText}`);
+        throw new Error('Network response was not ok: ' + response.status);
       }
       return response.blob();
     })
     .then(blob => {
+      console.log('PDF blob received:', blob.size, 'bytes');
+      
+      // Buat object URL dari blob
       const url = URL.createObjectURL(blob);
-      iframe.src = url;
       
-      // Bersihkan container dan tambahkan iframe
-      pdfCanvasContainer.innerHTML = '';
-      pdfCanvasContainer.appendChild(iframe);
+      // Buat object tag untuk menampilkan PDF
+      const obj = document.createElement('object');
+      obj.data = url;
+      obj.type = 'application/pdf';
+      obj.style.width = '100%';
+      obj.style.height = '800px';
+      obj.style.display = 'block';
       
-      // Bersihkan URL setelah iframe dimuat
-      iframe.onload = () => {
-        URL.revokeObjectURL(url);
+      // Tambahkan object tag ke container
+      pdfCanvasContainer.appendChild(obj);
+      
+      console.log('PDF object added to container with blob URL:', url);
+      
+      // Bersihkan object URL saat object tag dimuat
+      obj.onload = function() {
+        console.log('PDF object loaded successfully');
+      };
+      
+      // Tangani error
+      obj.onerror = function(error) {
+        console.error('Object error:', error);
+        pdfCanvasContainer.innerHTML = '<div class="error-message">Error: Gagal menampilkan PDF. Lihat console untuk detail.</div>';
       };
     })
     .catch(error => {
-      console.error('Error:', error);
-      pdfCanvasContainer.innerHTML = `<div class="error-message">Gagal memuat dokumen: ${error.message}</div>`;
+      console.error('Error fetching PDF:', error);
+      pdfCanvasContainer.innerHTML = `<div class="error-message">Gagal mengambil PDF: ${error.message}</div>`;
     });
+    
+    console.log('PDF fetch initiated');
+    
+    // Tambahkan event listener untuk debugging
+    iframe.onerror = (error) => {
+      console.error('Iframe error:', error);
+      pdfCanvasContainer.innerHTML = '<div class="error-message">Error: Gagal menampilkan PDF. Lihat console untuk detail.</div>';
+    };
+    
+    iframe.onload = () => {
+      console.log('Iframe loaded successfully');
+    };
   }
   
   // Fungsi untuk menampilkan PDF
@@ -455,7 +485,7 @@ function uploadSignature(imageData, taskId) {
         type: 'AUTOGRAPH'
       });
       
-      fetch(`http://apiidmall.supercorridor.co.id/api/subscription/signature/upload/${taskId}`, {
+      fetch(`https://apiidmall.supercorridor.co.id/api/subscription/signature/upload/${taskId}`, {
         method: 'POST',
         body: formData
       })
