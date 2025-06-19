@@ -404,15 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('PDF fetch initiated');
     
-    // Tambahkan event listener untuk debugging
-    iframe.onerror = (error) => {
-      console.error('Iframe error:', error);
-      pdfCanvasContainer.innerHTML = '<div class="error-message">Error: Gagal menampilkan PDF. Lihat console untuk detail.</div>';
-    };
-    
-    iframe.onload = () => {
-      console.log('Iframe loaded successfully');
-    };
+    // Tidak perlu event listener untuk iframe karena kita menggunakan object tag
   }
   
   // Fungsi untuk menampilkan PDF

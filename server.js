@@ -1,3 +1,6 @@
+const express = require('express');
+const app = express();
+
 // Tambahkan middleware untuk CORS
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -105,4 +108,10 @@ app.post('/api/subscription/fkb/submit-form', (req, res) => {
       '^/api/subscription': '/api/subscription'
     }
   })(req, res);
+});
+
+// Jalankan server
+const port = 3004; // Menggunakan port berbeda untuk menghindari konflik
+app.listen(port, () => {
+  console.log(`Server berjalan di http://localhost:${port}`);
 });
