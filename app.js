@@ -111,6 +111,6 @@ app.post('/submit-form', upload.single('pdf'), (req, res) => {
 });
 
 // Mulai server
-app.listen(port, () => {
-  console.log(`Server berjalan di http://localhost:${port}`);
+app.listen(3000, () => {
+  console.log('Server running');
 });

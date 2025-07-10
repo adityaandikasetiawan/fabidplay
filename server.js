@@ -1,7 +1,28 @@
+/**
+ * API Proxy Server untuk Fab IDPlay
+ * 
+ * Server ini berfungsi sebagai proxy untuk menghubungkan frontend dengan
+ * API IDMall. Mendukung fitur-fitur:
+ * - Proxy API subscription
+ * - Upload KTP
+ * - Upload tanda tangan
+ * - Submit form
+ */
+
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 
-// Tambahkan middleware untuk CORS
+// Konfigurasi dasar
+const API_TARGET = 'https://apiidmall.supercorridor.co.id/api';
+const PORT = process.env.PORT || 3004;
+
+// Body parser middleware untuk parsing JSON dan form data
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// CORS middleware
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
@@ -17,101 +38,109 @@ app.use((req, res, next) => {
 // Tambahkan proxy untuk API
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-// Tambahkan middleware proxy dengan konfigurasi yang lebih baik
-app.use('/api/subscription', createProxyMiddleware({
-  target: 'http://10.80.253.78:6868',
+// Konfigurasi proxy paths
+const PROXY_PATHS = {
+  subscription: '/api/subscription',
+  uploadKtp: '/api/upload-ktp',
+  uploadSignature: '/api/upload-signature',
+  submitForm: '/api/subscription/fkb/submit-form'
+};
+
+// Konfigurasi proxy target paths
+const TARGET_PATHS = {
+  subscription: '/api/subscription',
+  uploadKtp: '/api/subscription/retail/fkb/user',
+  uploadSignature: '/api/subscription/signature/upload',
+  submitForm: '/api/subscription/fkb/submit-form'
+};
+
+// Fungsi helper untuk proxy request
+const handleProxyRequest = (proxyReq, req, res) => {
+  if (req.body) {
+    const bodyData = JSON.stringify(req.body);
+    proxyReq.setHeader('Content-Type', 'application/json');
+    proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
+    proxyReq.write(bodyData);
+  }
+};
+
+// Proxy middleware untuk subscription
+app.use(PROXY_PATHS.subscription, createProxyMiddleware({
+  target: API_TARGET,
   changeOrigin: true,
   secure: false,
-  pathRewrite: {
-    '^/api/subscription': '/api/subscription'
-  },
-  onProxyReq: (proxyReq, req, res) => {
-    // Log request untuk debugging
-    console.log('Proxying request to:', req.url);
-    
-    // Jika ada body, pastikan content-length diatur dengan benar
-    if (req.body) {
-      const bodyData = JSON.stringify(req.body);
-      proxyReq.setHeader('Content-Type', 'application/json');
-      proxyReq.setHeader('Content-Length', Buffer.byteLength(bodyData));
-      proxyReq.write(bodyData);
-    }
-  },
-  onProxyRes: (proxyRes, req, res) => {
-    // Log response untuk debugging
-    console.log('Received response from API:', proxyRes.statusCode);
-  },
+  onProxyReq: handleProxyRequest,
   onError: (err, req, res) => {
-    console.error('Proxy error:', err);
+    console.error('Subscription Proxy Error:', err);
     res.status(500).send('Proxy Error: ' + err.message);
   }
 }));
 
-// Endpoint khusus untuk upload KTP
-app.post('/api/upload-ktp', (req, res) => {
-  console.log('Menerima request upload KTP');
-  
-  // Gunakan proxy yang sudah dibuat dengan konfigurasi khusus
-  const ktpProxy = createProxyMiddleware({
-    target: 'http://10.80.253.78:6868',
-    changeOrigin: true,
-    pathRewrite: {
-      '^/api/upload-ktp': '/api/subscription/retail/fkb/user'
-    },
-    onProxyReq: (proxyReq, req, res) => {
-      console.log('Proxying KTP upload to API');
-    },
-    onProxyRes: (proxyRes, req, res) => {
-      console.log('KTP upload response:', proxyRes.statusCode);
-    },
-    onError: (err, req, res) => {
-      console.error('KTP upload error:', err);
-      res.status(500).send('Error uploading KTP: ' + err.message);
-    }
+// Endpoint untuk upload KTP
+app.post(PROXY_PATHS.uploadKtp, createProxyMiddleware({
+  target: API_TARGET,
+  changeOrigin: true,
+  pathRewrite: {
+    ['^' + PROXY_PATHS.uploadKtp]: TARGET_PATHS.uploadKtp
+  },
+  onProxyReq: handleProxyRequest,
+  onError: (err, req, res) => {
+    console.error('KTP Upload Error:', err);
+    res.status(500).send('Error uploading KTP: ' + err.message);
+  }
+}));
+
+// Endpoint untuk upload tanda tangan
+app.post(PROXY_PATHS.uploadSignature + '/:task_id', createProxyMiddleware({
+  target: API_TARGET,
+  changeOrigin: true,
+  pathRewrite: (path, req) => {
+    const taskId = req.params.task_id;
+    return `${TARGET_PATHS.uploadSignature}/${taskId}`;
+  },
+  onProxyReq: handleProxyRequest,
+  onError: (err, req, res) => {
+    console.error('Signature Upload Error:', err);
+    res.status(500).send('Error uploading signature: ' + err.message);
+  }
+}));
+
+// Endpoint untuk submit form
+app.post(PROXY_PATHS.submitForm, createProxyMiddleware({
+  target: API_TARGET,
+  changeOrigin: true,
+  onProxyReq: handleProxyRequest,
+  onError: (err, req, res) => {
+    console.error('Submit Form Error:', err);
+    res.status(500).send('Error submitting form: ' + err.message);
+  }
+}));
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Global Error Handler:', err);
+  res.status(500).json({
+    error: 'Internal Server Error',
+    message: err.message
   });
-  
-  ktpProxy(req, res);
 });
 
-// Endpoint khusus untuk upload tanda tangan
-app.post('/api/upload-signature/:task_id', (req, res) => {
-  const taskId = req.params.task_id;
-  console.log(`Menerima request upload tanda tangan untuk task_id: ${taskId}`);
-  
-  // Gunakan proxy yang sudah dibuat dengan konfigurasi khusus
-  const signatureProxy = createProxyMiddleware({
-    target: 'http://10.80.253.78:6868',
-    changeOrigin: true,
-    pathRewrite: (path, req) => {
-      return `/api/subscription/signature/upload/${taskId}`;
-    },
-    onProxyReq: (proxyReq, req, res) => {
-      console.log(`Proxying signature upload to API for task_id: ${taskId}`);
-    },
-    onProxyRes: (proxyRes, req, res) => {
-      console.log('Signature upload response:', proxyRes.statusCode);
-    },
-    onError: (err, req, res) => {
-      console.error('Signature upload error:', err);
-      res.status(500).send('Error uploading signature: ' + err.message);
-    }
-  });
-  
-  signatureProxy(req, res);
+// Unhandled rejection handler
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise);
+  console.error('Reason:', reason);
 });
-app.post('/api/subscription/fkb/submit-form', (req, res) => {
-  // Gunakan proxy yang sudah dibuat
-  createProxyMiddleware({
-    target: 'http://10.80.253.78:6868',
-    changeOrigin: true,
-    pathRewrite: {
-      '^/api/subscription': '/api/subscription'
-    }
-  })(req, res);
+
+// Uncaught exception handler
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  // Keluar dengan status error
+  process.exit(1);
 });
 
 // Jalankan server
-const port = 3004; // Menggunakan port berbeda untuk menghindari konflik
-app.listen(port, () => {
-  console.log(`Server berjalan di http://localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+}).on('error', (err) => {
+  console.error('Server failed to start:', err);
 });

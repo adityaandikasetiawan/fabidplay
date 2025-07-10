@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Upload KTP dan Tanda Tangan</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .section {
+      flex: 1;
+      min-width: 300px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+    .preview {
+      width: 100%;
+      height: 200px;
+      border: 1px dashed #ccc;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f9f9f9;
+    }
+    .preview img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    #signature-canvas {
+      border: 1px solid #ccc;
+      width: 100%;
+      height: 200px;
+      background-color: #fff;
+    }
+    .status {
+      margin-top: 10px;
+      padding: 5px;
+      border-radius: 3px;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .clear-button {
+      background-color: #f44336;
+    }
+    .test-button {
+      background-color: #2196F3;
+    }
+    .uploads-list {
+      margin-top: 20px;
+    }
+    .uploads-list h3 {
+      margin-bottom: 10px;
+    }
+    .uploads-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .uploads-list li {
+      padding: 5px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .uploads-list li a {
+      color: #2196F3;
+      text-decoration: none;
+    }
+    .uploads-list li a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>Test Upload KTP dan Tanda Tangan</h1>
+  
+  <div class="container">
+    <div class="section">
+      <h2>Upload KTP</h2>
+      <input type="file" id="ktp-upload" accept="image/*">
+      <div class="preview">
+        <img id="ktp-preview-image" src="" alt="Preview KTP" style="display: none;">
+        <span id="ktp-preview-placeholder">Preview KTP akan ditampilkan di sini</span>
+      </div>
+      <div id="ktp-upload-status" class="status"></div>
+      <div class="button-group">
+        <button id="test-ktp-upload" class="test-button">Test Upload KTP</button>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>Tanda Tangan</h2>
+      <canvas id="signature-canvas"></canvas>
+      <div id="signature-status" class="status"></div>
+      <div class="button-group">
+        <button id="clear-signature" class="clear-button">Hapus Tanda Tangan</button>
+        <button id="test-signature-upload" class="test-button">Test Upload Tanda Tangan</button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>Test Form Lengkap</h2>
+    <div class="button-group">
+      <button id="test-form-submit">Test Submit Form</button>
+      <button id="check-connection">Cek Koneksi API</button>
+      <button id="restart-server" style="background-color: #FF9800;">Restart Server</button>
+    </div>
+    <div id="form-status" class="status"></div>
+  </div>
+  
+  <div class="section uploads-list">
+    <h2>File yang Telah Diunggah</h2>
+    <button id="refresh-uploads">Refresh</button>
+    <div id="uploads-container">
+      <p>Klik tombol refresh untuk melihat file yang telah diunggah</p>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/4.5.0/fabric.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // KTP Upload
+      const ktpUpload = document.getElementById('ktp-upload');
+      const ktpPreviewImage = document.getElementById('ktp-preview-image');
+      const ktpPreviewPlaceholder = document.getElementById('ktp-preview-placeholder');
+      const ktpUploadStatus = document.getElementById('ktp-upload-status');
+      const testKtpUploadButton = document.getElementById('test-ktp-upload');
+      
+      // Tanda Tangan
+      const signatureCanvas = document.getElementById('signature-canvas');
+      const signatureStatus = document.getElementById('signature-status');
+      const clearSignatureButton = document.getElementById('clear-signature');
+      const testSignatureUploadButton = document.getElementById('test-signature-upload');
+      
+      // Form
+      const testFormSubmitButton = document.getElementById('test-form-submit');
+      const formStatus = document.getElementById('form-status');
+      const checkConnectionButton = document.getElementById('check-connection');
+      const restartServerButton = document.getElementById('restart-server');
+      
+      // Uploads
+      const refreshUploadsButton = document.getElementById('refresh-uploads');
+      const uploadsContainer = document.getElementById('uploads-container');
+      
+      // Inisialisasi canvas tanda tangan
+      const canvas = new fabric.Canvas('signature-canvas', {
+        isDrawingMode: true
+      });
+      
+      canvas.freeDrawingBrush.width = 3;
+      canvas.freeDrawingBrush.color = '#000000';
+      
+      // Fungsi untuk menampilkan preview KTP
+      ktpUpload.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        
+        if (!file) return;
+        
+        // Validasi ukuran file (maksimal 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          ktpUploadStatus.textContent = 'Ukuran file terlalu besar (maksimal 5MB)';
+          ktpUploadStatus.className = 'status error';
+          return;
+        }
+        
+        // Validasi tipe file
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        if (!validTypes.includes(file.type)) {
+          ktpUploadStatus.textContent = 'Format file tidak didukung (hanya JPG, PNG, JPEG)';
+          ktpUploadStatus.className = 'status error';
+          return;
+        }
+        
+        // Tampilkan preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          ktpPreviewImage.src = e.target.result;
+          ktpPreviewImage.style.display = 'block';
+          ktpPreviewPlaceholder.style.display = 'none';
+          ktpUploadStatus.textContent = 'KTP berhasil diunggah';
+          ktpUploadStatus.className = 'status success';
+        };
+        reader.readAsDataURL(file);
+      });
+      
+      // Fungsi untuk mendapatkan gambar tanda tangan
+      function getSignatureImage() {
+        if (canvas.isEmpty()) {
+          return null;
+        }
+        
+        return canvas.toDataURL('image/png');
+      }
+      
+      // Fungsi untuk menghapus tanda tangan
+      clearSignatureButton.addEventListener('click', () => {
+        canvas.clear();
+        signatureStatus.textContent = '';
+        signatureStatus.className = 'status';
+      });
+      
+      // Test upload KTP
+      testKtpUploadButton.addEventListener('click', async () => {
+        try {
+          if (!ktpPreviewImage.src) {
+            ktpUploadStatus.textContent = 'Silakan unggah foto KTP terlebih dahulu';
+            ktpUploadStatus.className = 'status error';
+            return;
+          }
+          
+          const formData = new FormData();
+          formData.append('ktp_image', ktpPreviewImage.src);
+          
+          ktpUploadStatus.textContent = 'Mengunggah KTP...';
+          ktpUploadStatus.className = 'status';
+          
+          const response = await fetch('/api/upload-ktp-debug', {
+            method: 'POST',
+            body: formData
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            ktpUploadStatus.textContent = 'KTP berhasil diunggah: ' + result.message;
+            ktpUploadStatus.className = 'status success';
+          } else {
+            ktpUploadStatus.textContent = 'Gagal mengunggah KTP: ' + result.message;
+            ktpUploadStatus.className = 'status error';
+          }
+        } catch (error) {
+          console.error('Error saat mengunggah KTP:', error);
+          ktpUploadStatus.textContent = 'Error: ' + error.message;
+          ktpUploadStatus.className = 'status error';
+        }
+      });
+      
+      // Test upload tanda tangan
+      testSignatureUploadButton.addEventListener('click', async () => {
+        try {
+          const signatureImage = getSignatureImage();
+          
+          if (!signatureImage) {
+            signatureStatus.textContent = 'Silakan tambahkan tanda tangan terlebih dahulu';
+            signatureStatus.className = 'status error';
+            return;
+          }
+          
+          const formData = new FormData();
+          formData.append('signature', signatureImage);
+          
+          signatureStatus.textContent = 'Mengunggah tanda tangan...';
+          signatureStatus.className = 'status';
+          
+          const response = await fetch('/api/upload-signature-debug/test-task-id', {
+            method: 'POST',
+            body: formData
+          });
+          
+          const result = await response.json();
+          
+          if (result.success) {
+            signatureStatus.textContent = 'Tanda tangan berhasil diunggah: ' + result.message;
+            signatureStatus.className = 'status success';
+          } else {
+            signatureStatus.textContent = 'Gagal mengunggah tanda tangan: ' + result.message;
+            signatureStatus.className = 'status error';
+          }
+        } catch (error) {
+          console.error('Error saat mengunggah tanda tangan:', error);
+          signatureStatus.textContent = 'Error: ' + error.message;
+          signatureStatus.className = 'status error';
+        }
+      });
+      
+      // Test submit form
+      testFormSubmitButton.addEventListener('click', async () => {
+        try {
+          // Periksa apakah KTP telah diunggah
+          if (!ktpPreviewImage.src) {
+            formStatus.textContent = 'Silakan unggah foto KTP terlebih dahulu';
+            formStatus.className = 'status error';
+            return;
+          }
+          
+          // Dapatkan gambar tanda tangan
+          const signatureImage = getSignatureImage();
+          
+          if (!signatureImage) {
+            formStatus.textContent = 'Silakan tambahkan tanda tangan terlebih dahulu';
+            formStatus.className = 'status error';
+            return;
+          }
+          
+          // Siapkan data formulir
+          const formData = new FormData();
+          formData.append('signature', signatureImage);
+          formData.append('ktp_image', ktpPreviewImage.src);
+          formData.append('tnc_agreed', 'true');
+          
+          formStatus.textContent = 'Mengirim formulir...';
+          formStatus.className = 'status';
+          
+          // Gunakan endpoint debug untuk KTP dan tanda tangan
+          try {
+            // Upload KTP ke endpoint debug
+            const ktpResponse = await fetch('/api/upload-ktp-debug', {
+              method: 'POST',
+              body: formData
+            });
+            
+            const ktpResult = await ktpResponse.json();
+            console.log('KTP upload result (debug):', ktpResult);
+            
+            if (!ktpResult.success) {
+              throw new Error('Gagal mengunggah KTP: ' + ktpResult.message);
+            }
+            
+            // Upload tanda tangan ke endpoint debug
+            const signatureResponse = await fetch('/api/upload-signature-debug/test-task-id', {
+              method: 'POST',
+              body: formData
+            });
+            
+            const signatureResult = await signatureResponse.json();
+            console.log('Signature upload result (debug):', signatureResult);
+            
+            if (!signatureResult.success) {
+              throw new Error('Gagal mengunggah tanda tangan: ' + signatureResult.message);
+            }
+            
+            // Jika kedua upload berhasil, anggap form berhasil dikirim
+            formStatus.textContent = 'Formulir berhasil dikirim (debug mode)';
+            formStatus.className = 'status success';
+            
+            // Refresh daftar uploads
+            refreshUploads();
+          } catch (error) {
+            console.error('Error saat menggunakan endpoint debug:', error);
+            formStatus.textContent = 'Error: ' + error.message;
+            formStatus.className = 'status error';
+          }
+        } catch (error) {
+          console.error('Error saat mengirim formulir:', error);
+          formStatus.textContent = 'Error: ' + error.message;
+          formStatus.className = 'status error';
+        }
+      });
+      
+      // Cek koneksi API
+      checkConnectionButton.addEventListener('click', async () => {
+        try {
+          formStatus.textContent = 'Memeriksa koneksi API...';
+          formStatus.className = 'status';
+          
+          const response = await fetch('/api/check-connection');
+          const result = await response.json();
+          
+          console.log('API connection check result:', result);
+          
+          let statusText = 'Hasil pemeriksaan koneksi API:\n';
+          
+          if (result.results.idmall.ok) {
+            statusText += '✅ IDMall API: Terhubung\n';
+          } else if (result.results.idmall.error) {
+            statusText += '❌ IDMall API: Error - ' + result.results.idmall.error + '\n';
+          } else {
+            statusText += '❌ IDMall API: Status ' + result.results.idmall.status + '\n';
+          }
+          
+          if (result.results.subscription.ok) {
+            statusText += '✅ Subscription API: Terhubung';
+          } else if (result.results.subscription.error) {
+            statusText += '❌ Subscription API: Error - ' + result.results.subscription.error;
+          } else {
+            statusText += '❌ Subscription API: Status ' + result.results.subscription.status;
+          }
+          
+          formStatus.textContent = statusText;
+          formStatus.className = 'status ' + (result.results.idmall.ok && result.results.subscription.ok ? 'success' : 'error');
+        } catch (error) {
+          console.error('Error saat memeriksa koneksi API:', error);
+          formStatus.textContent = 'Error saat memeriksa koneksi API: ' + error.message;
+          formStatus.className = 'status error';
+        }
+      });
+      
+      // Refresh daftar uploads
+      async function refreshUploads() {
+        try {
+          const response = await fetch('/api/uploads');
+          const result = await response.json();
+          
+          if (result.success) {
+            if (result.files.length === 0) {
+              uploadsContainer.innerHTML = '<p>Belum ada file yang diunggah</p>';
+            } else {
+              const filesList = document.createElement('ul');
+              
+              result.files.forEach(file => {
+                const listItem = document.createElement('li');
+                const fileLink = document.createElement('a');
+                fileLink.href = file.path;
+                fileLink.target = '_blank';
+                fileLink.textContent = file.name + ' (' + formatFileSize(file.size) + ')';
+                
+                listItem.appendChild(fileLink);
+                filesList.appendChild(listItem);
+              });
+              
+              uploadsContainer.innerHTML = '';
+              uploadsContainer.appendChild(filesList);
+            }
+          } else {
+            uploadsContainer.innerHTML = '<p class="error">Error: ' + result.message + '</p>';
+          }
+        } catch (error) {
+          console.error('Error saat mengambil daftar uploads:', error);
+          uploadsContainer.innerHTML = '<p class="error">Error: ' + error.message + '</p>';
+        }
+      }
+      
+      refreshUploadsButton.addEventListener('click', refreshUploads);
+      
+      // Restart server
+      restartServerButton.addEventListener('click', async () => {
+        try {
+          if (!confirm('Apakah Anda yakin ingin me-restart server?')) {
+            return;
+          }
+          
+          formStatus.textContent = 'Me-restart server...';
+          formStatus.className = 'status';
+          
+          const response = await fetch('/api/restart-server');
+          const result = await response.json();
+          
+          formStatus.textContent = result.message;
+          formStatus.className = 'status success';
+          
+          // Tambahkan countdown
+          let countdown = 5;
+          const countdownInterval = setInterval(() => {
+            countdown--;
+            formStatus.textContent = `Server sedang di-restart. Halaman akan di-refresh dalam ${countdown} detik...`;
+            
+            if (countdown <= 0) {
+              clearInterval(countdownInterval);
+              window.location.reload();
+            }
+          }, 1000);
+        } catch (error) {
+          console.error('Error saat me-restart server:', error);
+          formStatus.textContent = 'Error saat me-restart server: ' + error.message;
+          formStatus.className = 'status error';
+        }
+      });
+      
+      // Helper function untuk format ukuran file
+      function formatFileSize(bytes) {
+        if (bytes < 1024) {
+          return bytes + ' B';
+        } else if (bytes < 1024 * 1024) {
+          return (bytes / 1024).toFixed(2) + ' KB';
+        } else {
+          return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
