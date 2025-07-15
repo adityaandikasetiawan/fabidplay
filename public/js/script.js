@@ -47,7 +47,7 @@ function uploadKTP(fileData) {
       
       // Ambil task_id dari URL
       const urlParams = new URLSearchParams(window.location.search);
-      const taskId = urlParams.get('task_id') || '16003265';
+      const taskId = urlParams.get('cid');
       formData.append('task_id', taskId);
 
       // Tambahkan user_id jika tidak ada token
@@ -95,6 +95,10 @@ function uploadSignature(imageData, taskId) {
   return new Promise((resolve, reject) => {
     try {
       const formData = new FormData();
+      const urlParams = new URLSearchParams(window.location.search);
+      const taskId = urlParams.get('cid');
+      formData.append('task_id', taskId);
+
       formData.append('signature', imageData); // Ubah 'file' menjadi 'signature'
       formData.append('type', 'AUTOGRAPH'); // Tambahkan type AUTOGRAPH
       
@@ -461,44 +465,3 @@ document.addEventListener('DOMContentLoaded', function() {
     loadFormDocument();
   }
 });
-
-// Fungsi untuk upload tanda tangan
-function uploadSignature(imageData, taskId) {
-  return new Promise((resolve, reject) => {
-    try {
-      const formData = new FormData();
-      formData.append('signature', imageData); // Kirim base64 string langsung
-      formData.append('type', 'AUTOGRAPH');
-      formData.append('user_id', 'customer@gmail.com');
-      
-      console.log('Mencoba upload tanda tangan...', {
-        taskId: taskId,
-        signatureLength: imageData.length,
-        type: 'AUTOGRAPH'
-      });
-      
-      fetch(`https://apiidmall.supercorridor.co.id/api/subscription/signature/upload/${taskId}`, {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        console.log('Response status:', response.status);
-        if (!response.ok) {
-          throw new Error('Gagal mengunggah tanda tangan. Status: ' + response.status);
-        }
-        return response.json();
-      })
-      .then(data => {
-        console.log('Upload berhasil:', data);
-        resolve(data);
-      })
-      .catch(error => {
-        console.error('Error detail:', error);
-        reject(error);
-      });
-    } catch (error) {
-      console.error('Error dalam try-catch:', error);
-      reject(error);
-    }
-  });
-}
